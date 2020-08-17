@@ -15,9 +15,9 @@ class mapServices{
 		}
 	}
 
-	static async getBuildingThimphu(){
+	static async getBuilding(dzo){
 		try {
-			const result = await database.sequelize.query('select ST_AsGeoJSON(geom),osm_id,name from buildings;')
+			const result = await database.sequelize.query("select ST_AsGeoJSON(geom),osm_id from buildings_rectified where dzongkhag = '"+dzo+"';")
 			return result[0]
 		}catch (error){
 			console.log(error)

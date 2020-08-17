@@ -7,7 +7,7 @@ const router=Router();
 //get boundary of all dzongkhag thromdes
 
 router.get('/throms',mapController.getAlldzoThrom)
-router.get('/buildings',mapController.getBuildingThimphu)
+router.get('/buildings/:dzo',mapController.getBuilding)
 
 
 export default router;

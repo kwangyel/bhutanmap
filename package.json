@@ -7,8 +7,8 @@
     "dev": "nodemon --exec babel-node ./api/index.js",
     "clean": "rm -rf build && mkdir build",
     "build-babel": "babel -d ./build ./api -s",
-    "build": "npm run build-babel",
-    "start": "node ./build/index.js",
+    "build": "npm run clean && npm run build-babel",
+    "start": "npm run build && node ./build/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

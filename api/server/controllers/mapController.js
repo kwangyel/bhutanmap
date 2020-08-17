@@ -25,9 +25,11 @@ class mapController{
 			return util.send(res);
 		}
 	}
-	static async getBuildingThimphu(req,res){
+
+	static async getBuilding(req,res){
+		const {dzo} = req.params;
 		try{
-			const buildings= await mapServices.getBuildingThimphu();
+			const buildings= await mapServices.getBuilding(dzo);
 			if(buildings.length > 0){
 				const result = buildings.map((row)=>{
 					let geojson=JSON.parse(row.st_asgeojson);
