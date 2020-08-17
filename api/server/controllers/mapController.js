@@ -26,6 +26,28 @@ class mapController{
 		}
 	}
 
+	static async getZone(req,res){
+		try{
+			const zones =await mapServices.getZones();
+			if(zones.length > 0){
+				const result = zones.map((row)=>{
+					let geojson=JSON.parse(row.st_asgeojson);
+					return geojson;
+				})
+				
+				util.setSuccess(200,'Zones Retrieved',result);
+			}else{
+				util.setSuccess(200,'No zones found');
+			}
+			return util.send(res);
+		}catch(error){
+			util.setError(400,error);
+			
+			return util.send(res);
+		}
+	}
+
+
 	static async getBuilding(req,res){
 		const {dzo} = req.params;
 		try{

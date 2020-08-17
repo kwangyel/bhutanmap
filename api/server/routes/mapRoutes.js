@@ -8,6 +8,7 @@ const router=Router();
 
 router.get('/throms',mapController.getAlldzoThrom)
 router.get('/buildings/:dzo',mapController.getBuilding)
+router.get('/zone',mapController.getZone)
 
 
 export default router;
