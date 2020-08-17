@@ -26,7 +26,7 @@ class mapServices{
 
 	static async getZones(){
 		try {
-			const result = await database.sequelize.query("select ST_AsGeoJSON(geom) from zone_prj;") 
+			const result = await database.sequelize.query("select ST_AsGeoJSON(geom),sub_zone,zone_id from zone_prj;") 
 			return result[0]
 		}catch (error){
 			console.log(error)
