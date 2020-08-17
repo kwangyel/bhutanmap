@@ -32,6 +32,7 @@ class mapController{
 			if(zones.length > 0){
 				const result = zones.map((row)=>{
 					let geojson=JSON.parse(row.st_asgeojson);
+					geojson.properties = { name: row.sub_zone, zone_id: row.zone_id }
 					return geojson;
 				})
 				
