@@ -6,11 +6,15 @@ export default class Util {
     this.message = null;
   }
 
-  setSuccess(statusCode, message, data) {
+  setSuccess(statusCode, message) {
     this.statusCode = statusCode;
     this.message = message;
-    this.data = data;
-    this.type = 'success';
+    this.type = 'true';
+  }
+  setFailure(statusCode,message){
+    this.statusCode = statusCode;
+    this.message = message;
+    this.type = 'false';
   }
 
   setError(statusCode, message) {
@@ -19,18 +23,22 @@ export default class Util {
     this.type = 'error';
   }
 
+  setData(data){
+    this.data = data;
+  }
+
   send(res) {
     const result = {
-      status: this.type,
+      success: this.type,
       message: this.message,
       data: this.data,
     };
 
-    if (this.type === 'success') {
+    if (this.data) {
       return res.status(this.statusCode).json(result);
     }
     return res.status(this.statusCode).json({
-      status: this.type,
+      success: this.type,
       message: this.message,
     });
   }

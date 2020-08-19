@@ -6,7 +6,7 @@ module.exports={
 	    "username": "postgres",
 	    "password": "covid@2020#",
 	    "database": "postgres",
-	    "host": "localhost",
+	    "host": "43.230.208.80",
 	    "dialect": "postgres"
 	  },
 	  "test": {
