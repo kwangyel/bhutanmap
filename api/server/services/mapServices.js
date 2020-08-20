@@ -29,5 +29,14 @@ class mapServices{
 			throw error
 		}
 	}
+	
+	static async getBuildingPoints(zoneid){
+		try {
+			const result = await database.sequelize.query('select ST_AsGeoJSON(geom),id,block from thimphu_onlyzone where block='+zoneid+';')
+			return result[0]
+		}catch (error){
+			console.log(error)
+		}
+	}
 }
 export default mapServices;

@@ -5,28 +5,6 @@ const util=new Util();
 
 class mapController{
 
-	static async getZone(req,res){
-		try{
-			const zones =await mapServices.getZones();
-			if(zones.length > 0){
-				const result = zones.map((row)=>{
-					let geojson=JSON.parse(row.st_asgeojson);
-					geojson.properties = { name: row.sub_zone, zone_id: row.zone_id }
-					return geojson;
-				})
-				
-				util.setSuccess(200,'Zones Retrieved',result);
-			}else{
-				util.setSuccess(200,'No zones found');
-			}
-			return util.send(res);
-		}catch(error){
-			util.setError(400,error);
-			
-			return util.send(res);
-		}
-	}
-
 
 	static async getZone(req,res){
 		const zoneid = req.body.zone_id
@@ -66,6 +44,34 @@ class mapController{
 			console.log(error)
 			util.setError(400,error)
 			return util.send(res)
+		}
+	}
+
+	static async getBuildingPoint(req,res){
+		const {zoneid} = req.params;
+		try{
+			const valid_zone = await mapServices.getZone(zoneid)
+			if(!valid_zone){
+				util.setError(400,"Zone id not found")
+				return util.send(res)
+			}
+			const buildings= await mapServices.getBuildingPoints(zoneid);
+			if(buildings.length > 0){
+				const result = buildings.map((row)=>{
+					let geojson=JSON.parse(row.st_asgeojson);
+					geojson.properties = {id: row.id, block: row.block}
+					return geojson;
+				})
+				util.setSuccess(200,'Buildings Retrieved');
+				util.setData(buildings);
+			}else{
+				util.setSuccess(200,'No buildings found');
+			}
+			return util.send(res);
+		}catch(error){
+			console.log(error);
+			util.setError(400, error);
+			return util.send(res);
 		}
 	}
 }
