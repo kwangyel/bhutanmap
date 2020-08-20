@@ -6,8 +6,6 @@ const router=Router();
 
 //get boundary of all dzongkhag thromdes
 
-router.get('/throms',mapController.getAlldzoThrom)
-router.get('/buildings/:dzo',mapController.getBuilding)
 router.get('/zone',mapController.getZone)
 router.post('/checkzone',mapController.checkPointInZone)
 
