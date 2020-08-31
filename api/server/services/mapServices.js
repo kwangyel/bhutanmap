@@ -1,41 +1,43 @@
 import database from '../src/models';
 
 class mapServices{
-	static async getZones(){
+
+	//get a subzone feature with zoneid provided
+	static async getZone(zoneid){
 		try {
-			const result = await database.sequelize.query("select ST_AsGeoJSON(geom),sub_zone,zone_id from zone_prj;") 
+			const result = await database.sequelize.query("select ST_AsGeoJSON(geom),subzoneid from sub_zones where subzoneid = "+zoneid+";") 
 			return result[0]
 		}catch (error){
 			console.log(error)
 		}
 	}
 
-	static async checkZoneofPoint(lat,lng){
-		try{
-			const result = await database.sequelize.query("select a.zone_id from public.zone_prj a where ST_Intersects(ST_SetSRID(ST_Point("+lng+","+lat+"),4326), a.geom);")
-			return result[0]
-		}catch(error){
-			throw error
-		}
-	}
+	// static async checkZoneofPoint(lat,lng){
+	// 	try{
+	// 		const result = await database.sequelize.query("select a.zone_id from public.zone_prj a where ST_Intersects(ST_SetSRID(ST_Point("+lng+","+lat+"),4326), a.geom);")
+	// 		return result[0]
+	// 	}catch(error){
+	// 		throw error
+	// 	}
+	// }
 
-	static async getZone(zone_id){
-		try{
-			const result = await database.Zones.findOne({
-				where:{zone_id: Number(zone_id)},
-			})
-			return result
-		}catch(error){
-			throw error
-		}
-	}
 	
-	static async getBuildingPoints(zoneid){
-		try {
-			const result = await database.sequelize.query('select ST_AsGeoJSON(geom),id,block from thimphu_onlyzone where block='+zoneid+';')
+	// static async getBuildingPoints(zoneid){
+	// 	try {
+	// 		const result = await database.sequelize.query('select ST_AsGeoJSON(geom),id,block from thimphu_onlyzone where block='+zoneid+';')
+	// 		return result[0]
+	// 	}catch (error){
+	// 		console.log(error)
+	// 	}
+	// }
+
+	static async getAddress(st_name,b_name){
+		try{
+			// const result = await database.sequelize.query("SELECT gid, objectid, __gid, bldg_num, street_pry, remarks, street_id, geom FROM public.building_prj where street_pry = '"+st_name+"' AND bldg_num = '"+b_name+"';");
+			const result = await database.sequelize.query("Select * from public.building_prj where SIMILARITY(street_pry,'"+st_name+"') > 0.3 and SIMILARITY(bldg_num,'"+b_name+"')>0.7;");
 			return result[0]
-		}catch (error){
-			console.log(error)
+		}catch(error){
+			throw error
 		}
 	}
 }
