@@ -11,9 +11,12 @@ const router=Router();
 // router.post('/getaddress',mapController.getAddress)
 
 //endpoint to get all zones
+
+
 //endpoint to get particular zones????
 router.get('/getzone/:zoneid',mapController.getzone)
 //endpoint to search for address and return all possible matches
+router.get('/searchaddress/:address',mapController.searchAddress)
 //endpoint to get drection from point a to point b
 //
 export default router;

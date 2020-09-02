@@ -31,12 +31,16 @@ class mapServices{
 	// 	}
 	// }
 
-	static async getAddress(st_name,b_name){
+	static async searchAddress(address){
 		try{
 			// const result = await database.sequelize.query("SELECT gid, objectid, __gid, bldg_num, street_pry, remarks, street_id, geom FROM public.building_prj where street_pry = '"+st_name+"' AND bldg_num = '"+b_name+"';");
-			const result = await database.sequelize.query("Select * from public.building_prj where SIMILARITY(street_pry,'"+st_name+"') > 0.3 and SIMILARITY(bldg_num,'"+b_name+"')>0.7;");
+			// const result = await database.sequelize.query("Select * from public.building_prj where SIMILARITY(street_pry,'"+st_name+"') > 0.3 and SIMILARITY(bldg_num,'"+b_name+"')>0.7;");
+			//using Levenshtein algo as it yielded better results. Returns top five matches in order
+			const result = await database.sequelize.query("SELECT * FROM building_address where LEVENSHTEIN(address, '"+address+"')<7 ORDER BY LEVENSHTEIN(address, '"+address+"') ASC LIMIT 5;");
+
 			return result[0]
 		}catch(error){
+			console.log(error)
 			throw error
 		}
 	}

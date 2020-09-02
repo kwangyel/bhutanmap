@@ -14,10 +14,15 @@ class mapController{
 		try{
 			const result = await mapServices.getZone(zoneid)
 			if(result.length){
-				util.setSuccess(200,"success")
-				util.setData(result)
+				const resp = result.map((row)=>{
+					let geojson=JSON.parse(row.st_asgeojson);
+					geojson.properties = {subzoneid: row.subzoneid}
+					return geojson;
+				})
+				util.setSuccess(200,'success');
+				util.setData(resp);
 			}else{
-				util.setSuccess(200,"Data not found")
+				util.setSuccess(200,'Data not found');
 			}
 			return util.send(res)
 		}catch(error){
@@ -78,17 +83,15 @@ class mapController{
 	// 	}
 	// }
 
-	static async getAddress(req,res){
-		const st_name = req.body.st_name;
-		const b_name = req.body.b_name;
-		
+	static async searchAddress(req,res){
+		const {address} = req.params
 		try{
-			const address = await mapServices.getAddress(st_name,b_name);
-			if(address.length > 0){
-				util.setSuccess(200,"found Address");
-				util.setData(address);
+			const places = await mapServices.searchAddress(address);
+			if(places.length){
+				util.setSuccess(200,"found places");
+				util.setData(places);
 			}else{
-				util.setSuccess(200,"Address doesn't exist");
+				util.setFailure(200,"Address doesn't exist");
 			}
 			return util.send(res);
 		}catch(err){
