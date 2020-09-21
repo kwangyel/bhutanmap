@@ -44,5 +44,19 @@ class mapServices{
 			throw error
 		}
 	}
+	static async getpath(a,b){
+		try{
+			// const result = await database.sequelize.query("Select seq, node, edge,cost, geom, agg_cost from pgr_dijkstra( 'Select gid as id, source, target, st_length(geom::geography)/1000 as cost from thimphu',(SELECT source FROM thimphu ORDER BY geom <-> ST_SetSRID(ST_Point ( 89.647003,27.431575 ),4326) LIMIT 1), (SELECT source FROM thimphu ORDER BY geom <-> ST_SetSRID(ST_Point ( 89.647400,27.460075),4326) limit 1), false) as di JOIN thimphu pt ON (di.edge = pt.gid);");
+
+			// const result = await database.sequelize.query("Select seq, node, edge,cost, geom, agg_cost from pgr_dijkstra( 'Select gid as id, source, target, st_length(geom::geography)/1000 as cost from thimphu',(SELECT source FROM thimphu ORDER BY geom <-> ST_SetSRID(ST_Point ( "+a.lng+","+a.lat+"),4326) LIMIT 1), (SELECT source FROM thimphu ORDER BY geom <-> ST_SetSRID(ST_Point ( "+b.lng+","+b.lat+"),4326) limit 1), false) as di JOIN thimphu pt ON (di.edge = pt.gid);");
+			const result = await database.sequelize.query("Select seq, node, edge,'cost', geom from pgr_dijkstra( 'Select gid as id, source, target, st_length(geom) as cost from thimphu', 188,997, false) as di JOIN thimphu pt ON di.edge = pt.gid ;");
+
+			return result[0];
+
+		}catch(error){
+			console.log(error)
+			throw error
+		}
+	}
 }
 export default mapServices;

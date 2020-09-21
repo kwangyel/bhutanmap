@@ -99,6 +99,24 @@ class mapController{
 			return util.send(res);
 		}
 	}
+
+	static async getpath(req,res){
+		const a = req.body.pointa;
+		const b = req.body.pointb;
+		try{
+			const path = await mapServices.getpath(a,b);
+			if(path.length){
+				util.setSuccess(200,"found places");
+				util.setData(path);
+			}else{
+				util.setFailure(200,"Address doesn't exist");
+			}
+			return util.send(res);
+		}catch(err){
+			util.setError(400,err);
+			return util.send(res);
+		}
+	}
 }
 
 export default mapController;
